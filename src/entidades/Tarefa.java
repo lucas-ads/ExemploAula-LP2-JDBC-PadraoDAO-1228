@@ -1,6 +1,7 @@
 package entidades;
 
 public class Tarefa {
+	
 	private int id;
 	private String descricao;
 	private int prioridade;
