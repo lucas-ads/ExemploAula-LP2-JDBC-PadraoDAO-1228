@@ -9,11 +9,14 @@ import java.util.List;
 import java.util.Scanner;
 
 import dao.DaoTarefa;
+import dao.DaoUsuario;
 import entidades.Tarefa;
+import entidades.Usuario;
 
 public class Programa {
 
 	private static DaoTarefa daoTarefa = new DaoTarefa();
+	private static DaoUsuario daoUsuario = new DaoUsuario();
 	
 	public static void main(String[] args) throws SQLException {
 		
@@ -28,6 +31,8 @@ public class Programa {
 			System.out.println("4 - Excluir tarefa");
 			System.out.println("5 - Listar tarefas");
 			System.out.println("6 - Pesquisar tarefas");
+			
+			System.out.println("7 - Cadastrar Usuário");
 			System.out.println("0 - Sair");
 			
 			opcao = Integer.parseInt( scanner.nextLine() );
@@ -50,6 +55,9 @@ public class Programa {
 					break;
 				case 6:
 					pesquisarTarefas();
+					break;
+				case 7:
+					cadastrarUsuario();
 					break;
 				case 0:
 					System.out.println("Até mais.");
@@ -188,6 +196,22 @@ public class Programa {
 			
 			scanner.nextLine();
 		}
+	}
+
+	public static void cadastrarUsuario() throws SQLException{
+		Scanner scanner = new Scanner(System.in);
+
+		System.out.println("Digite seu email: ");
+		String email = scanner.nextLine();
+		
+		System.out.println("Informe sua senha: ");
+		String senha = scanner.nextLine();
+
+		Usuario usuario = new Usuario(email, senha);
+
+		System.out.println( daoUsuario.inserir( usuario ) ? "Cadastrou!" : "Falha do cadastro...");
+
+		System.out.println("Usuario cadastrado sob o ID " + usuario.getId());
 	}
 }
 

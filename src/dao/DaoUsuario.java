@@ -9,18 +9,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entidades.Tarefa;
+import entidades.Usuario;
 
-public class DaoTarefa {
+public class DaoUsuario {
 	
-	public boolean inserir(Tarefa tarefa) throws SQLException {
-				
+	public boolean inserir(Usuario usuario) throws SQLException {
+		
 		Connection conexao = ConnectionFactory.getConexao();
 		
-		String sql = "insert into tarefas (descricao, prioridade) values(? , ?);";
+		String sql = "insert into usuarios (email, senha) values(? , sha2( ? , 256 ));";
 		PreparedStatement ps = conexao.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
 
-		ps.setString(1, tarefa.getDescricao());
-		ps.setInt(2, tarefa.getPrioridade());
+		ps.setString(1, usuario.getEmail());
+		ps.setString(2, usuario.getSenha());
 
 		int linhasAfetadas = ps.executeUpdate();
 		
@@ -28,13 +29,13 @@ public class DaoTarefa {
 		
 		if( r.next() ) {
 			int id = r.getInt(1);	
-			tarefa.setId(id);
+			usuario.setId(id);
 		}
 		
 		return (linhasAfetadas == 1 ? true : false);
 	}
 
-	public boolean atualizar(Tarefa tarefa) throws SQLException {
+	/*public boolean atualizar(Tarefa tarefa) throws SQLException {
 		Connection con = ConnectionFactory.getConexao();
 		
 		String sql = "update tarefas set descricao = ?, prioridade = ? where id = ?";
@@ -134,5 +135,5 @@ public class DaoTarefa {
 		}
 		
 		return tarefas;
-	}
+	}*/
 }
