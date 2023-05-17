@@ -77,12 +77,21 @@ public class Programa {
 		
 		System.out.println("Informe a prioridade: ");
 		int prioridade = Integer.parseInt(scanner.nextLine());
+		
+		System.out.println("Informe o ID do Usuário: ");
+		int idUser = Integer.parseInt(scanner.nextLine());
 
-		Tarefa t = new Tarefa(descricao, prioridade);
-
-		System.out.println( daoTarefa.inserir( t ) ? "Cadastrou!" : "Falha do cadastro...");
-
-		System.out.println("Tarefa cadastrada sob o ID " + t.getId());
+		Usuario u = daoUsuario.buscarPorId(idUser);
+		
+		if(u != null) {
+			Tarefa t = new Tarefa(descricao, prioridade, u);
+	
+			System.out.println( daoTarefa.inserir( t ) ? "Cadastrou!" : "Falha do cadastro...");
+	
+			System.out.println("Tarefa cadastrada sob o ID " + t.getId());
+		}else {
+			System.out.println("Não existe usuário com o ID informado!");
+		}
 	}
 	
 	public static void atualizarTarefa() throws SQLException{
@@ -139,7 +148,8 @@ public class Programa {
 		if(t != null) {
 			System.out.println("ID: " + t.getId());
 			System.out.println("Descrição: " + t.getDescricao());
-			System.out.println("Prioridade: " + t.getPrioridade()+"\n");
+			System.out.println("Prioridade: " + t.getPrioridade());
+			System.out.println("Usuário: " + t.getUsuario().getEmail() +"\n");
 		}else {
 			System.out.println("Tarefa não existe...");
 		}
@@ -173,7 +183,9 @@ public class Programa {
 		for(Tarefa t : tasks) {
 			System.out.println("ID: " + t.getId());
 			System.out.println("Descrição: " + t.getDescricao());
-			System.out.println("Prioridade: " + t.getPrioridade()+"\n");
+			System.out.println("Prioridade: " + t.getPrioridade());
+			System.out.println("Usuário: " + t.getUsuario().getEmail() +"\n");
+
 			
 			scanner.nextLine();
 		}
@@ -192,7 +204,8 @@ public class Programa {
 		for(Tarefa t : tasks) {
 			System.out.println("ID: " + t.getId());
 			System.out.println("Descrição: " + t.getDescricao());
-			System.out.println("Prioridade: " + t.getPrioridade()+"\n");
+			System.out.println("Prioridade: " + t.getPrioridade());
+			System.out.println("Usuário: " + t.getUsuario().getEmail() +"\n");
 			
 			scanner.nextLine();
 		}
@@ -214,57 +227,3 @@ public class Programa {
 		System.out.println("Usuario cadastrado sob o ID " + usuario.getId());
 	}
 }
-
-
-
-
-/*DaoTarefa daoTarefa = new DaoTarefa();
-
-/*Tarefa tarefa = daoTarefa.buscar(10);
-
-if(tarefa != null) {
-	System.out.println("ID: " + tarefa.getId());
-	System.out.println("Descrição: " + tarefa.getDescricao());
-	System.out.println("Prioridade: " + tarefa.getPrioridade()+"\n");		
-}else {
-	System.out.println("Não existe tarefa cadastrada com esse ID...");
-}
-
-
-
-
-
-
-
-//Select
-
-/*String sql = "select * from tarefas";
-PreparedStatement ps = conexao.prepareStatement(sql);
-
-ResultSet resultSet = ps.executeQuery();
-
-while( resultSet.next() ) {
-	String descricao = resultSet.getString("descricao");
-	int prioridade = resultSet.getInt("prioridade");
-	
-	System.out.println("Descrição: " + descricao);
-	System.out.println("Prioridade: " + prioridade + "\n");
-}
-
-//Update
-/*String sql = "update tarefas set prioridade = ? where prioridade > ?";
-PreparedStatement ps = conexao.prepareStatement(sql);
-
-ps.setInt(1, 5);
-ps.setInt(2, 5);
-
-System.out.println("Linhas afetadas: " + ps.executeUpdate());*/
-
-//Delete
-
-/*String sql = "delete from tarefas where id = ?";
-PreparedStatement ps = conexao.prepareStatement(sql);
-
-ps.setInt(1, 2);
-
-System.out.println("Linhas afetadas: " + ps.executeUpdate());*/

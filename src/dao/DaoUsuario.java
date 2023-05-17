@@ -34,106 +34,46 @@ public class DaoUsuario {
 		
 		return (linhasAfetadas == 1 ? true : false);
 	}
-
-	/*public boolean atualizar(Tarefa tarefa) throws SQLException {
-		Connection con = ConnectionFactory.getConexao();
-		
-		String sql = "update tarefas set descricao = ?, prioridade = ? where id = ?";
-		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setString(1, tarefa.getDescricao());
-		ps.setInt(2, tarefa.getPrioridade());
-		ps.setInt(3, tarefa.getId());
-		
-		if( ps.executeUpdate() == 1) {
-			return true;
-		}else {
-			return false;
-		}
+	
+	public boolean atualizarDados(Usuario usuario) throws SQLException {
+		return true;
+	}
+	
+	public boolean atualizarSenha(Usuario usuario) throws SQLException {
+		return true;
 	}
 
 	public boolean excluir(int id) throws SQLException {
-		Connection con = ConnectionFactory.getConexao();
-		
-		String sql = "delete from tarefas where id = ?";
-		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setInt(1, id);
-		
-		if( ps.executeUpdate() == 1) {
-			return true;
-		}else {
-			return false;
-		}
+		return true;
 	}
-
-	public Tarefa buscar(int idBuscado) throws SQLException {
-		
+	
+	public Usuario buscarPorId(int idBuscado) throws SQLException {
 		Connection con = ConnectionFactory.getConexao();
 		
-		String sql = "select * from tarefas where id = ?";
+		String sql = "select * from usuarios where id = ?";
 		PreparedStatement ps = con.prepareStatement(sql);
 		ps.setInt(1, idBuscado);
 		
 		ResultSet result = ps.executeQuery();
 		
-		Tarefa tarefa = null;
+		Usuario usuario = null;
 		
 		if( result.next() ) {
 			int id = result.getInt("id");
-			String descricao = result.getString("descricao");
-			int prioridade = result.getInt("prioridade");
+			String email = result.getString("email");
+			String senha = result.getString("senha");
 			
-			tarefa = new Tarefa(id, descricao, prioridade);
+			usuario = new Usuario(id, email, senha);
 		}
 		
-		return tarefa;
+		return usuario;
 	}
-
-	public List<Tarefa> buscarTodas() throws SQLException {
-		Connection con = ConnectionFactory.getConexao();
-		
-		String sql = "select * from tarefas";
-		
-		PreparedStatement ps = con.prepareStatement(sql);
-		
-		ResultSet result = ps.executeQuery();
-		
-		List<Tarefa> tarefas = new ArrayList<Tarefa>();
-		
-		while( result.next() ) {
-			int id = result.getInt("id");
-			String descricao = result.getString("descricao");
-			int prioridade = result.getInt("prioridade");
-			
-			Tarefa t = new Tarefa(id, descricao, prioridade);
 	
-			tarefas.add(t);
-		}
-		
-		return tarefas;
+	public Usuario buscarPorEmail(String email) throws SQLException {
+		return null;
 	}
-
-	public List<Tarefa> pesquisarPorDescricao(String texto) throws SQLException {
-		Connection con = ConnectionFactory.getConexao();
-		
-		String sql = "select * from tarefas where descricao like ? ";
-		
-		PreparedStatement ps = con.prepareStatement(sql);
-		ps.setString(1, "%"+texto+"%");
-		
-		ResultSet result = ps.executeQuery();
-		
-		List<Tarefa> tarefas = new ArrayList<Tarefa>();
-		
-		while( result.next() ) {
-			int id = result.getInt("id");
-			String descricao = result.getString("descricao");
-			int prioridade = result.getInt("prioridade");
-			
-			Tarefa t = new Tarefa(id, descricao, prioridade);
 	
-			tarefas.add(t);
-		}
-		
-		return tarefas;
-	}*/
+	public List<Usuario> buscarTodos() throws SQLException {
+		return null;
+	}
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entidades.Tarefa;
+import entidades.Usuario;
 
 public class DaoTarefa {
 	
@@ -16,11 +17,12 @@ public class DaoTarefa {
 				
 		Connection conexao = ConnectionFactory.getConexao();
 		
-		String sql = "insert into tarefas (descricao, prioridade) values(? , ?);";
+		String sql = "insert into tarefas (descricao, prioridade, usuario_id) values(? , ? , ?);";
 		PreparedStatement ps = conexao.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
 
 		ps.setString(1, tarefa.getDescricao());
 		ps.setInt(2, tarefa.getPrioridade());
+		ps.setInt(3, tarefa.getUsuario().getId() );
 
 		int linhasAfetadas = ps.executeUpdate();
 		
@@ -80,8 +82,12 @@ public class DaoTarefa {
 			int id = result.getInt("id");
 			String descricao = result.getString("descricao");
 			int prioridade = result.getInt("prioridade");
+			int idUsuario = result.getInt("usuario_id");
 			
-			tarefa = new Tarefa(id, descricao, prioridade);
+			DaoUsuario daoUser = new DaoUsuario();
+			Usuario u = daoUser.buscarPorId(idUsuario);
+			
+			tarefa = new Tarefa(id, descricao, prioridade, u);
 		}
 		
 		return tarefa;
@@ -98,12 +104,17 @@ public class DaoTarefa {
 		
 		List<Tarefa> tarefas = new ArrayList<Tarefa>();
 		
+		DaoUsuario daoUser = new DaoUsuario();
+
 		while( result.next() ) {
 			int id = result.getInt("id");
 			String descricao = result.getString("descricao");
 			int prioridade = result.getInt("prioridade");
+			int idUsuario = result.getInt("usuario_id");
 			
-			Tarefa t = new Tarefa(id, descricao, prioridade);
+			Usuario u = daoUser.buscarPorId(idUsuario);
+			
+			Tarefa t = new Tarefa(id, descricao, prioridade, u);
 	
 			tarefas.add(t);
 		}
@@ -123,12 +134,16 @@ public class DaoTarefa {
 		
 		List<Tarefa> tarefas = new ArrayList<Tarefa>();
 		
+		DaoUsuario daoUser = new DaoUsuario();
+		
 		while( result.next() ) {
 			int id = result.getInt("id");
 			String descricao = result.getString("descricao");
 			int prioridade = result.getInt("prioridade");
+			int idUsuario = result.getInt("usuario_id");
 			
-			Tarefa t = new Tarefa(id, descricao, prioridade);
+			Usuario u = daoUser.buscarPorId(idUsuario);
+			Tarefa t = new Tarefa(id, descricao, prioridade, u);
 	
 			tarefas.add(t);
 		}
