@@ -33,6 +33,10 @@ public class Programa {
 			System.out.println("6 - Pesquisar tarefas");
 			
 			System.out.println("7 - Cadastrar Usuário");
+			System.out.println("8 - Listar usuários");
+			
+			System.out.println("9 - Listar tarefas por usuário");
+			
 			System.out.println("0 - Sair");
 			
 			opcao = Integer.parseInt( scanner.nextLine() );
@@ -58,6 +62,12 @@ public class Programa {
 					break;
 				case 7:
 					cadastrarUsuario();
+					break;
+				case 8:
+					listarUsuarios();
+					break;
+				case 9:
+					listarTarefasPorUsuario();
 					break;
 				case 0:
 					System.out.println("Até mais.");
@@ -225,5 +235,38 @@ public class Programa {
 		System.out.println( daoUsuario.inserir( usuario ) ? "Cadastrou!" : "Falha do cadastro...");
 
 		System.out.println("Usuario cadastrado sob o ID " + usuario.getId());
+	}
+	
+	public static void listarUsuarios() throws SQLException {
+		
+		System.out.println("\n##### Listar Usuários #####\n");
+		
+		List<Usuario> users = daoUsuario.buscarTodos();
+		
+		for(Usuario u : users) {
+			System.out.println("ID: " + u.getId());
+			System.out.println("E-mail: " + u.getEmail());
+			System.out.println("Senha: " + u.getSenha());
+		}
+	}
+	
+	public static void listarTarefasPorUsuario() throws SQLException{
+		System.out.println("\n##### Listar Tarefas por Usuário #####\n");
+		
+		Scanner scanner = new Scanner(System.in);
+
+		System.out.println("Digite o email do usuário: ");
+		String email = scanner.nextLine();
+		
+		List<Tarefa> tasks = daoTarefa.tarefasPorUsuario(email);
+		
+		for(Tarefa t : tasks) {
+			System.out.println("ID: " + t.getId());
+			System.out.println("Descrição: " + t.getDescricao());
+			System.out.println("Prioridade: " + t.getPrioridade());
+			System.out.println("Usuário: " + t.getUsuario().getEmail() +"\n");
+			
+			scanner.nextLine();
+		}
 	}
 }

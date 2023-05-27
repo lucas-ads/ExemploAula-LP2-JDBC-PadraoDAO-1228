@@ -74,6 +74,26 @@ public class DaoUsuario {
 	}
 	
 	public List<Usuario> buscarTodos() throws SQLException {
-		return null;
+		Connection con = ConnectionFactory.getConexao();
+		
+		String sql = "select * from usuarios";
+		
+		PreparedStatement ps = con.prepareStatement(sql);
+		
+		ResultSet result = ps.executeQuery();
+		
+		List<Usuario> usuarios = new ArrayList<Usuario>();
+		
+		while( result.next() ) {
+			int id = result.getInt("id");
+			String email = result.getString("email");
+			String senha = result.getString("senha");
+			
+			Usuario usuario = new Usuario(id, email, senha);
+	
+			usuarios.add(usuario);
+		}
+		
+		return usuarios;
 	}
 }

@@ -150,4 +150,37 @@ public class DaoTarefa {
 		
 		return tarefas;
 	}
+	
+	public List<Tarefa> tarefasPorUsuario(String email) throws SQLException {
+		Connection con = ConnectionFactory.getConexao();
+		
+		String sql = "select * from tarefas left join usuarios on tarefas.usuario_id = usuarios.id where usuarios.email = ?;";
+		
+		PreparedStatement ps = con.prepareStatement(sql);
+		ps.setString(1, email);
+		
+		ResultSet result = ps.executeQuery();
+		
+		List<Tarefa> tarefas = new ArrayList<Tarefa>();
+		
+		
+		if( result.next() ) {			
+			int idUser = result.getInt("usuario_id");
+			String senha = result.getString("senha");
+			
+			Usuario usuario = new Usuario(idUser, email, senha);
+			
+			do {
+				int id = result.getInt("id");
+				String descricao = result.getString("descricao");
+				int prioridade = result.getInt("prioridade");
+				
+				Tarefa t = new Tarefa(id, descricao, prioridade, usuario);
+		
+				tarefas.add(t);
+			}while(result.next());
+		}
+		
+		return tarefas;
+	}
 }
